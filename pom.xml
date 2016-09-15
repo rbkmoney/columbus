@@ -26,13 +26,13 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <columb.db.url>jdbc:postgresql://localhost:5432/columb</columb.db.url>
-                <columb.db.user>postgres</columb.db.user>
-                <columb.db.password>postgres</columb.db.password>
-                <columb.db.schema>clb</columb.db.schema>
-                <flyway.db.url>${columb.db.url}</flyway.db.url>
-                <flyway.user>${columb.db.user}</flyway.user>
-                <flyway.password>${columb.db.password}</flyway.password>
+                <columbus.db.url>jdbc:postgresql://localhost:5432/columbus</columbus.db.url>
+                <columbus.db.user>postgres</columbus.db.user>
+                <columbus.db.password>postgres</columbus.db.password>
+                <columbus.db.schema>clb</columbus.db.schema>
+                <flyway.db.url>${columbus.db.url}</flyway.db.url>
+                <flyway.user>${columbus.db.user}</flyway.user>
+                <flyway.password>${columbus.db.password}</flyway.password>
                 <bm.pooling.url>http://localhost:8081/repo</bm.pooling.url>
                 <bm.pooling.limit>10</bm.pooling.limit>
                 <geo.db.file.path>file:///Users/alexeysemenkov/soft/GEO_DATABASES/GeoLite2-City.mmdb</geo.db.file.path>

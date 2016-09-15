@@ -3,6 +3,7 @@ package com.rbkmoney.columbus;
 import com.rbkmoney.columbus.dao.GeoIpDao;
 import com.rbkmoney.columbus.model.Lang;
 import com.rbkmoney.columbus.model.LocationInfo;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@Ignore
 //@Ignore //to run test need correct .mmdb file path in config
 public class MaxMindDbTest {
 

@@ -49,7 +49,7 @@ public class DataSourceConfiguration {
 
     @Bean
     public Schema dbSchema() {
-        return new SchemaImpl("columb");
+        return new SchemaImpl("clb");
     }
 
 }
