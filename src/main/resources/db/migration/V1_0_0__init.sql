@@ -1,4 +1,4 @@
-CREATE TABLE columb.city_locations_ru
+CREATE TABLE clb.city_locations_ru
 (
   geoname_id integer NOT NULL,
   locale_code text,
@@ -17,12 +17,12 @@ CREATE TABLE columb.city_locations_ru
 );
 
 CREATE UNIQUE INDEX "geoname_id_unique_idx"
-  ON columb.city_locations_ru
+  ON clb.city_locations_ru
   USING btree
   (geoname_id);
 
 
-CREATE TABLE columb.city_locations_eng
+CREATE TABLE clb.city_locations_eng
 (
   geoname_id integer NOT NULL,
   locale_code text,
@@ -41,6 +41,6 @@ CREATE TABLE columb.city_locations_eng
 );
 
 CREATE UNIQUE INDEX "geoname_id_unique_idx"
-  ON columb.city_locations_eng
+  ON clb.city_locations_eng
   USING btree
   (geoname_id);

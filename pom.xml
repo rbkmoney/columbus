@@ -19,6 +19,43 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <columb.db.url>jdbc:postgresql://localhost:5432/columb</columb.db.url>
+                <columb.db.user>postgres</columb.db.user>
+                <columb.db.password>postgres</columb.db.password>
+                <columb.db.schema>clb</columb.db.schema>
+                <flyway.db.url>${columb.db.url}</flyway.db.url>
+                <flyway.user>${columb.db.user}</flyway.user>
+                <flyway.password>${columb.db.password}</flyway.password>
+                <bm.pooling.url>http://localhost:8081/repo</bm.pooling.url>
+                <bm.pooling.limit>10</bm.pooling.limit>
+                <geo.db.file.path>file:///Users/alexeysemenkov/soft/GEO_DATABASES/GeoLite2-City.mmdb</geo.db.file.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>ci</id>
+            <properties>
+                <mst.db.url>jdbc:postgresql://${db.url.host.name}:5432/magista</mst.db.url>
+                <mst.db.user>postgres</mst.db.user>
+                <mst.db.password>postgres</mst.db.password>
+                <mst.db.schema>mst</mst.db.schema>
+                <db.url.host.name>mst_db</db.url.host.name>
+                <flyway.db.url>${mst.db.url}</flyway.db.url>
+                <flyway.user>${mst.db.user}</flyway.user>
+                <flyway.password>${mst.db.password}</flyway.password>
+                <bm.pooling.url>http://locahost:8080</bm.pooling.url>
+                <bm.pooling.limit>10</bm.pooling.limit>
+                <geo.db.file.path>./GeoLite2-City.mmdb</geo.db.file.path>
+            </properties>
+        </profile>
+    </profiles>
+
 
     <dependencies>
         <!--Thrirdparty libs-->
