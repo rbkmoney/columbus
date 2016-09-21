@@ -13,7 +13,7 @@
 
     <groupId>com.rbkmoney.columbus</groupId>
     <artifactId>columbus</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,25 +33,21 @@
                 <flyway.db.url>${columbus.db.url}</flyway.db.url>
                 <flyway.user>${columbus.db.user}</flyway.user>
                 <flyway.password>${columbus.db.password}</flyway.password>
-                <bm.pooling.url>http://localhost:8081/repo</bm.pooling.url>
-                <bm.pooling.limit>10</bm.pooling.limit>
-                <geo.db.file.path>file:///Users/alexeysemenkov/soft/GEO_DATABASES/GeoLite2-City.mmdb</geo.db.file.path>
+                <geo.db.file.path>file://Users/alexeysemenkov/soft/GEO_DATABASES/GeoLite2-city.mmdb</geo.db.file.path>
             </properties>
         </profile>
         <profile>
             <id>ci</id>
             <properties>
-                <mst.db.url>jdbc:postgresql://${db.url.host.name}:5432/magista</mst.db.url>
-                <mst.db.user>postgres</mst.db.user>
-                <mst.db.password>postgres</mst.db.password>
-                <mst.db.schema>mst</mst.db.schema>
-                <db.url.host.name>mst_db</db.url.host.name>
-                <flyway.db.url>${mst.db.url}</flyway.db.url>
-                <flyway.user>${mst.db.user}</flyway.user>
-                <flyway.password>${mst.db.password}</flyway.password>
-                <bm.pooling.url>http://locahost:8080</bm.pooling.url>
-                <bm.pooling.limit>10</bm.pooling.limit>
-                <geo.db.file.path>./GeoLite2-City.mmdb</geo.db.file.path>
+                <columbus.db.url>jdbc:postgresql://clbdb:5432/columbus</columbus.db.url>
+                <columbus.db.user>postgres</columbus.db.user>
+                <columbus.db.password>postgres</columbus.db.password>
+                <columbus.db.schema>clb</columbus.db.schema>
+                <flyway.db.url>${columbus.db.url}</flyway.db.url>
+                <flyway.user>${columbus.db.user}</flyway.user>
+                <flyway.password>${columbus.db.password}</flyway.password>
+                <!--todo: change to correct name-->
+                <geo.db.file.path>file://var/geodata/GeoLite2-city.mmdb</geo.db.file.path>
             </properties>
         </profile>
     </profiles>
@@ -89,6 +85,7 @@
             <artifactId>geoip2</artifactId>
             <version>2.8.0-rc1</version>
         </dependency>
+
 
         <!--RBK libs-->
         <dependency>

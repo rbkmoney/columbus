@@ -46,3 +46,4 @@ CREATE UNIQUE INDEX "geoname_id_eng_unique_idx"
   ON clb.city_locations_eng
   USING btree
   (geoname_id);
+

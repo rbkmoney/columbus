@@ -14,8 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Ignore
-//@Ignore //to run test need correct .mmdb file path in config
+@Ignore //to run test need correct .mmdb file path in config
 public class MaxMindDbTest {
 
     @Autowired
