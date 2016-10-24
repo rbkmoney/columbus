@@ -1,14 +1,17 @@
 # @dockerfile.Template@
+FROM dr.rbkmoney.com/rbkmoney/service-java:@dockerfile.base.service.tag@
+MAINTAINER Poluektov Yevgeniy <e.poluektov@rbkmoney.com>
 
-# base java service image
-FROM dr.rbkmoney.com/rbkmoney/service-java:d688a72d5859177174f733a5b6e6f4c460ce8ef3
-MAINTAINER Semenkov Alexey <a.semenkov@rbkmoney.com>
-COPY @artifactId@-@version@.jar /opt/@artifactId@/@artifactId@-@version@.jar
-CMD ["java", "-Xmx512m", "-jar","/opt/@artifactId@/@artifactId@-@version@.jar"]
-EXPOSE 8022
+COPY @artifactId@-@version@.jar /opt/@artifactId@/@artifactId@.jar
+COPY containerpilot.json /etc/containerpilot.json
 
-LABEL com.rbkmoney.@artifactId@.parent=service_java \
-    com.rbkmoney.@artifactId@.parent_tag=d688a72d5859177174f733a5b6e6f4c460ce8ef3 \
+ENTRYPOINT ["/bin/containerpilot", "-config", "file:///etc/containerpilot.json",  "java"]
+CMD ["-Xmx512m", "-jar","/opt/@artifactId@/@artifactId@.jar"]
+
+EXPOSE @server.port@
+
+LABEL com.rbkmoney.@artifactId@.parent=service-java \
+    com.rbkmoney.@artifactId@.parent_tag=@dockerfile.base.service.tag@ \
     com.rbkmoney.@artifactId@.build_img=build \
     com.rbkmoney.@artifactId@.build_img_tag=@dockerfile.build.container.tag@ \
     com.rbkmoney.@artifactId@.commit_id=@git.revision@ \
