@@ -11,12 +11,26 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implements CityLocationsDao {
-
-    private static String RU_LOCATION_TABLE = "mst.city_locations_ru";
-    private static String ENG_LOCATION_TABLE = "mst.city_locations_eng";
     Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private static String RU_LOCATION_TABLE = "clb.city_locations_ru";
+    private static String ENG_LOCATION_TABLE = "clb.city_locations_en";
+
+    @Override
+    public List<CityLocation> getByGeoIds(Set<Integer> geoIdset, Lang lang) throws DaoException {
+        //TODO improve performance by doing only one request to db
+        List<CityLocation> cityLocations = new ArrayList<>();
+        for(int geoId: geoIdset){
+            CityLocation cityLocation = getByGeoId(geoId, lang);
+            cityLocations.add(cityLocation);
+        }
+        return cityLocations;
+    }
 
     @Override
     public CityLocation getByGeoId(int geoId, Lang lang) {

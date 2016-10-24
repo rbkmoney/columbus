@@ -24,7 +24,7 @@ CREATE UNIQUE INDEX "geoname_id_ru_unique_idx"
   (geoname_id);
 
 
-CREATE TABLE clb.city_locations_eng
+CREATE TABLE clb.city_locations_en
 (
   geoname_id integer NOT NULL,
   locale_code text,
@@ -39,11 +39,11 @@ CREATE TABLE clb.city_locations_eng
   city_name text,
   metro_code text,
   time_zone text,
-  CONSTRAINT "geoname_id_eng_pkey" PRIMARY KEY ("geoname_id")
+  CONSTRAINT "geoname_id_en_pkey" PRIMARY KEY ("geoname_id")
 );
 
-CREATE UNIQUE INDEX "geoname_id_eng_unique_idx"
-  ON clb.city_locations_eng
+CREATE UNIQUE INDEX "geoname_id_en_unique_idx"
+  ON clb.city_locations_en
   USING btree
   (geoname_id);
 

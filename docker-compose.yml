@@ -10,18 +10,18 @@ postgres:
     - /var/geodata
     - ~/.docker-volumes/rbkmoney/columbus/postgresql/data:/var/lib/postgresql/data
 
-columbus:
-  build: target
-  links:
-   - postgres
-  ports:
-   - "8022:8022"
-  volumes_from:
-   - postgres:ro
-  entrypoint:
-   - java
-   - -jar
-   - /opt/columbus/columbus.jar
-   - --db.jdbc.url=jdbc:postgresql://postgres:5432/columbus
-   - --geo.db.file.path=file:/var/geodata/GeoLite2-city.mmdb
+#columbus:
+#  build: target
+#  links:
+#   - postgres
+#  ports:
+#   - "8022:8022"
+#  volumes_from:
+#   - postgres:ro
+#  entrypoint:
+#   - java
+#   - -jar
+#   - /opt/columbus/columbus.jar
+#   - --db.jdbc.url=jdbc:postgresql://postgres:5432/columbus
+#   - --geo.db.file.path=file:/var/geodata/GeoLite2-city.mmdb
 

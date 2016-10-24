@@ -118,4 +118,14 @@ public class CityLocation {
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
     }
+
+    public String getName(){
+        String[] names = {cityName, subdivision_2Name, subdivision_1Name, countryName, continentName};
+        for(String name: names){
+            if(name != null && !"".equals(name)){
+                return name;
+            }
+        }
+        return null;
+    }
 }

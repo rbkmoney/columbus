@@ -1,12 +1,16 @@
 package com.rbkmoney.columbus.service;
 
-import com.rbkmoney.columbus.model.Lang;
-import com.rbkmoney.columbus.model.LocationInfo;
 import com.rbkmoney.columbus.dao.CityLocationsDao;
 import com.rbkmoney.columbus.dao.GeoIpDao;
 import com.rbkmoney.columbus.model.CityLocation;
+import com.rbkmoney.columbus.model.Lang;
+import com.rbkmoney.columbus.model.LocationInfo;
+import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class GeoService {
@@ -17,12 +21,15 @@ public class GeoService {
     @Autowired
     GeoIpDao geoIpDao;
 
-    public void enrich(){
-        String ip = "94.159.54.234";
-        LocationInfo locationInfoByIp = geoIpDao.getLocationInfoByIp(ip);
+    public LocationInfo getLocationByIp(String ip){
+        return geoIpDao.getLocationInfoByIp(ip);
     }
 
     public CityLocation getLocationByGeoId(int geoId ){
         return cityLocationsDao.getByGeoId(geoId, Lang.RU);
+    }
+
+    public List<CityLocation> getLocationName(Set<Integer> geoIdset, String lang) throws TException {
+        return cityLocationsDao.getByGeoIds(geoIdset, Lang.getByAbbreviation(lang));
     }
 }
