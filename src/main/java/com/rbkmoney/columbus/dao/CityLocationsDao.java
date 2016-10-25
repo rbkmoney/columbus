@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface CityLocationsDao {
-
-    CityLocation getByGeoId(int geoId, Lang lang) throws DaoException;
     List<CityLocation> getByGeoIds(Set<Integer> geoIdset, Lang lang) throws DaoException;
-
 }
 

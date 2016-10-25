@@ -1,8 +1,6 @@
 package com.rbkmoney.columbus;
 
 import com.rbkmoney.columbus.dao.CityLocationsDao;
-import com.rbkmoney.columbus.model.CityLocation;
-import com.rbkmoney.columbus.model.Lang;
 import com.rbkmoney.columbus.service.GeoService;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,8 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.junit.Assert.assertEquals;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,12 +23,6 @@ public class GeoServiceTest {
 
     @Autowired
     GeoService geoEnrichmentService;
-
-    @Test
-    public void getLocationByGeoId(){
-        CityLocation byGeoId = cityLocationsDao.getByGeoId(553248, Lang.RU);
-        assertEquals("Камызяк",byGeoId.getCityName());
-    }
 
     @Test
     public void startManyThreads(){

@@ -25,10 +25,6 @@ public class GeoService {
         return geoIpDao.getLocationInfoByIp(ip);
     }
 
-    public CityLocation getLocationByGeoId(int geoId ){
-        return cityLocationsDao.getByGeoId(geoId, Lang.RU);
-    }
-
     public List<CityLocation> getLocationName(Set<Integer> geoIdset, String lang) throws TException {
         return cityLocationsDao.getByGeoIds(geoIdset, Lang.getByAbbreviation(lang));
     }

@@ -24,12 +24,6 @@ public class CityLocationsDaoTest {
     CityLocationsDao cityLocationsDao;
 
     @Test
-    public void getLocationByGeoId(){
-        CityLocation byGeoId = cityLocationsDao.getByGeoId(553248, Lang.RU);
-        assertEquals("Камызяк",byGeoId.getCityName());
-    }
-
-    @Test
     public void getLocationByGeoIds(){
         final int kamiziak = 553248;
         final int moscow = 524901;
