@@ -40,7 +40,7 @@
                 <flyway.db.url>${columbus.db.url}</flyway.db.url>
                 <flyway.user>${columbus.db.user}</flyway.user>
                 <flyway.password>${columbus.db.password}</flyway.password>
-                <geo.db.file.path>file:${project.basedir}/geo_data/GeoLite2-city.mmdb</geo.db.file.path>
+                <geo.db.file.path>file:${project.basedir}/geo_data/geo_data/GeoLite2-city.mmdb</geo.db.file.path>
             </properties>
         </profile>
         <profile>

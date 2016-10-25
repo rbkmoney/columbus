@@ -1,13 +1,16 @@
 postgres:
-  build: geo_data
+  image: dr.rbkmoney.com/rbkmoney/postgres-geodata:7535abe1dcd9942f9289afd5f665dc9e39c56f90
   environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
     POSTGRES_DB: columbus
+  entrypoint:
+   - /docker-entrypoint.sh
+   - postgres
   ports:
     - '5432:5432'
   volumes:
-    - /var/geodata
+#    - ./geo_data/geo_data:/var/geodata
     - ~/.docker-volumes/rbkmoney/columbus/postgresql/data:/var/lib/postgresql/data
 
 #columbus:
