@@ -6,7 +6,7 @@ build('columbus', 'docker-host') {
     def baseImageTag = "70f9fa4ba9bb06cc36b292862ab0555f3bad6321"
     def buildImageTag = "7372dc01bf066b5b26be13d6de0c7bed70648a26"
     def dbHostName = "clbdb"
-    def dbImage = "dr.rbkmoney.com/rbkmoney/postgres-geodata:7535abe1dcd9942f9289afd5f665dc9e39c56f90"
+    def dbImage = "dr.rbkmoney.com/rbkmoney/postgres-geodata:e8e2f437b04c13cd7f48efbe07cb4e83b8642cc1"
     def mvnArgs = '-DjvmArgs="-Xmx256m"'
 
     // service name - usually equals artifactId
