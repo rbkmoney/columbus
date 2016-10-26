@@ -25,7 +25,7 @@ import java.net.UnknownHostException;
  */
 @Component
 public class GeoIpDao {
-    Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value(value = "${geo.db.file.path}")
     private String geoDbFilePath;
@@ -51,7 +51,7 @@ public class GeoIpDao {
             ipAddress = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
             log.error("Cant parse ip address", e);
-            return emptyCityResponse();
+            return null;
         }
 
         try {
@@ -63,10 +63,6 @@ public class GeoIpDao {
         } catch (GeoIp2Exception e) {
             log.error("GEO DB error", e);
         }
-        return emptyCityResponse();
-    }
-
-    private static CityResponseWrapper emptyCityResponse(){
-        return new CityResponseWrapper(null, "");
+        return null;
     }
 }
