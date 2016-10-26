@@ -22,7 +22,7 @@ public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implement
 
     @Override
     public List<CityLocation> getByGeoIds(Set<Integer> geoIdset, Lang lang) throws DaoException {
-        String locationTableName = getLocatiionTableName(lang);
+        String locationTableName = getLocationTableName(lang);
 
         String sql = "SELECT " +
                 " geoname_id, locale_code, continent_code, continent_name, country_iso_code, " +
@@ -40,7 +40,7 @@ public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implement
         );
     }
 
-    private String getLocatiionTableName(Lang lang){
+    private String getLocationTableName(Lang lang){
         if (lang.equals(Lang.RU)) {
             return RU_LOCATION_TABLE;
         } else if (lang.equals(Lang.ENG)) {
