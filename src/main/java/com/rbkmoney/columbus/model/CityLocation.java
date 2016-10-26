@@ -7,10 +7,10 @@ public class CityLocation {
     private String continentName;
     private String countryIsoCode;
     private String countryName;
-    private String subdivision_1IsoCode;
-    private String subdivision_1Name;
-    private String subdivision_2IsoCode;
-    private String subdivision_2Name;
+    private String subdivision1IsoCode;
+    private String subdivision1Name;
+    private String subdivision2IsoCode;
+    private String subdivision2Name;
     private String cityName;
     private String metroCode;
     private String timeZone;
@@ -63,36 +63,36 @@ public class CityLocation {
         this.countryName = countryName;
     }
 
-    public String getSubdivision_1IsoCode() {
-        return subdivision_1IsoCode;
+    public String getSubdivision1IsoCode() {
+        return subdivision1IsoCode;
     }
 
-    public void setSubdivision_1IsoCode(String subdivision_1IsoCode) {
-        this.subdivision_1IsoCode = subdivision_1IsoCode;
+    public void setSubdivision1IsoCode(String subdivision1IsoCode) {
+        this.subdivision1IsoCode = subdivision1IsoCode;
     }
 
-    public String getSubdivision_1Name() {
-        return subdivision_1Name;
+    public String getSubdivision1Name() {
+        return subdivision1Name;
     }
 
-    public void setSubdivision_1Name(String subdivision_1Name) {
-        this.subdivision_1Name = subdivision_1Name;
+    public void setSubdivision1Name(String subdivision1Name) {
+        this.subdivision1Name = subdivision1Name;
     }
 
-    public String getSubdivision_2IsoCode() {
-        return subdivision_2IsoCode;
+    public String getSubdivision2IsoCode() {
+        return subdivision2IsoCode;
     }
 
-    public void setSubdivision_2IsoCode(String subdivision_2IsoCode) {
-        this.subdivision_2IsoCode = subdivision_2IsoCode;
+    public void setSubdivision2IsoCode(String subdivision2IsoCode) {
+        this.subdivision2IsoCode = subdivision2IsoCode;
     }
 
-    public String getSubdivision_2Name() {
-        return subdivision_2Name;
+    public String getSubdivision2Name() {
+        return subdivision2Name;
     }
 
-    public void setSubdivision_2Name(String subdivision_2Name) {
-        this.subdivision_2Name = subdivision_2Name;
+    public void setSubdivision2Name(String subdivision2Name) {
+        this.subdivision2Name = subdivision2Name;
     }
 
     public String getCityName() {
@@ -120,7 +120,7 @@ public class CityLocation {
     }
 
     public String getName(){
-        String[] names = {cityName, subdivision_2Name, subdivision_1Name, countryName, continentName};
+        String[] names = {cityName, subdivision2Name, subdivision1Name, countryName, continentName};
         for(String name: names){
             if(name != null && !"".equals(name)){
                 return name;

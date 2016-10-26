@@ -5,17 +5,19 @@ import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.model.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
 public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implements CityLocationsDao {
-    Logger log = LoggerFactory.getLogger(this.getClass());
+    private final CityLocationRowMapper cityLocationRowMapper = new CityLocationRowMapper();
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private static String RU_LOCATION_TABLE = "clb.city_locations_ru";
     private static String ENG_LOCATION_TABLE = "clb.city_locations_en";
@@ -36,7 +38,7 @@ public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implement
         return getNamedParameterJdbcTemplate().query(
                 sql,
                 source,
-                getRowMapper()
+                cityLocationRowMapper
         );
     }
 
@@ -54,7 +56,25 @@ public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implement
         setDataSource(ds);
     }
 
-    public static RowMapper<CityLocation> getRowMapper() {
-        return BeanPropertyRowMapper.newInstance(CityLocation.class);
+    private static class CityLocationRowMapper implements RowMapper<CityLocation> {
+        @Override
+        public CityLocation mapRow(ResultSet resultSet, int i) throws SQLException {
+            CityLocation cl = new CityLocation();
+            cl.setGeonameId(resultSet.getInt("geoname_id"));
+            cl.setLocaleCode(resultSet.getString("locale_code"));
+            cl.setContinentCode(resultSet.getString("continent_code"));
+            cl.setContinentName(resultSet.getString("continent_name"));
+            cl.setCountryIsoCode(resultSet.getString("country_iso_code"));
+            cl.setCountryName(resultSet.getString("country_name"));
+            cl.setSubdivision1IsoCode(resultSet.getString("subdivision_1_iso_code"));
+            cl.setSubdivision1Name(resultSet.getString("subdivision_1_name"));
+            cl.setSubdivision2IsoCode(resultSet.getString("subdivision_2_iso_code"));
+            cl.setSubdivision2IsoCode(resultSet.getString("subdivision_2_name"));
+            cl.setCityName(resultSet.getString("city_name"));
+            cl.setMetroCode(resultSet.getString("metro_code"));
+            cl.setTimeZone(resultSet.getString("time_zone"));
+
+            return cl;
+        }
     }
 }

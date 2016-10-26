@@ -40,11 +40,11 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             geoIDInfo.setCityName(cl.getCityName());
 
             Set<SubdivisionInfo> subdivisionInfoSet = new HashSet<>();
-            if(!StringUtils.isEmpty(cl.getSubdivision_1Name())){
-                subdivisionInfoSet.add(new SubdivisionInfo((short) 1,cl.getSubdivision_1Name()));
+            if(!StringUtils.isEmpty(cl.getSubdivision1Name())){
+                subdivisionInfoSet.add(new SubdivisionInfo((short) 1,cl.getSubdivision1Name()));
             }
-            if(!StringUtils.isEmpty(cl.getSubdivision_1Name())){
-                subdivisionInfoSet.add(new SubdivisionInfo((short) 1,cl.getSubdivision_1Name()));
+            if(!StringUtils.isEmpty(cl.getSubdivision1Name())){
+                subdivisionInfoSet.add(new SubdivisionInfo((short) 1,cl.getSubdivision1Name()));
             }
             if(!subdivisionInfoSet.isEmpty()){
                 geoIDInfo.setSubdivisions(subdivisionInfoSet);
