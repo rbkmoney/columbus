@@ -3,8 +3,8 @@ package com.rbkmoney.columbus;
 import com.rbkmoney.columbus.dao.CityLocationsDao;
 import com.rbkmoney.columbus.dao.GeoIpDao;
 import com.rbkmoney.columbus.model.CityLocation;
+import com.rbkmoney.columbus.model.CityResponseWrapper;
 import com.rbkmoney.columbus.model.Lang;
-import com.rbkmoney.columbus.model.LocationInfo;
 import com.rbkmoney.columbus.service.GeoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,15 +38,15 @@ public class GeoServiceTest {
 
     @Test
     public void testWrongIp() {
-        LocationInfo undefinedLocation = geoIpDao.getLocationInfoByIp("null");
-        assertEquals("Неизвестно", undefinedLocation.getCity().getNames().get(Lang.RU));
+        CityResponseWrapper undefinedLocation = geoIpDao.getLocationInfoByIp("null");
+        assertEquals(null, undefinedLocation.getResponse());
     }
 
     @Test
     public void getLocationByIp(){
         for(String ip: IP_TO_CITY.keySet()){
-            LocationInfo locationInfo = service.getLocationByIp(ip);
-            assertEquals(locationInfo.getCity().getNames().get(Lang.ENG), IP_TO_CITY.get(ip));
+            CityResponseWrapper locationInfo = service.getLocationByIp(ip);
+            assertEquals(locationInfo.getResponse().getCity().getNames().get(Lang.ENG.getValue()), IP_TO_CITY.get(ip));
         }
     }
 

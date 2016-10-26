@@ -1,6 +1,7 @@
 package com.rbkmoney.columbus.service;
 
 import com.rbkmoney.columbus.model.CityLocation;
+import com.rbkmoney.columbus.model.CityResponseWrapper;
 import com.rbkmoney.damsel.geo_ip.*;
 import org.apache.thrift.TException;
 import org.springframework.util.StringUtils;
@@ -22,11 +23,11 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
     @Override
     public LocationInfo getLocation(String ip) throws CantDetermineLocation, TException {
         //TODO think about CantDetermineLocation instead of UndefinedLocation
-        com.rbkmoney.columbus.model.LocationInfo info = service.getLocationByIp(ip);
+        CityResponseWrapper cityResponse = service.getLocationByIp(ip);
         LocationInfo ret = new LocationInfo(
-                info.getCity().getGeoNameId(),
-                info.getCountry().getGeoNameId(),
-                info.getRawResponse()
+                cityResponse.getResponse().getCity().getGeoNameId(),
+                cityResponse.getResponse().getCountry().getGeoNameId(),
+                cityResponse.getJsonResponse()
         );
         return ret;
     }
@@ -59,6 +60,4 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
         return service.getLocationName(geo_ids, lang).stream()
                 .collect(Collectors.toMap(CityLocation::getGeonameId, CityLocation::getName));
     }
-
-
 }

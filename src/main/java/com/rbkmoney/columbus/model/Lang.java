@@ -15,7 +15,7 @@ public enum Lang {
     UNKNOWN("unknown");
 
     // Reverse-lookup map for getting a Lang from an abbreviation
-    private static final Map<String, Lang> lookup = new HashMap<String, Lang>();
+    private static final Map<String, Lang> lookup = new HashMap<>();
 
     static {
         for (Lang l : Lang.values()) {
