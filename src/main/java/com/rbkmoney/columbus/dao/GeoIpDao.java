@@ -1,10 +1,8 @@
 package com.rbkmoney.columbus.dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
-import com.rbkmoney.columbus.model.CityResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 
 /**
@@ -34,7 +31,6 @@ public class GeoIpDao {
     private ResourceLoader resourceLoader;
 
     private DatabaseReader reader;
-    private ObjectMapper mapper;
 
     @PostConstruct
     public void init() throws IOException {
@@ -42,27 +38,9 @@ public class GeoIpDao {
         Resource resource = resourceLoader.getResource(geoDbFilePath);
         File dbAsFile = resource.getFile();
         reader = new DatabaseReader.Builder(dbAsFile).build();
-        mapper = new ObjectMapper();
     }
 
-    public CityResponseWrapper getLocationInfoByIp(String ip) {
-        InetAddress ipAddress;
-        try {
-            ipAddress = InetAddress.getByName(ip);
-        } catch (UnknownHostException e) {
-            log.error("Cant parse ip address", e);
-            return null;
-        }
-
-        try {
-            CityResponse response = reader.city(ipAddress);
-            String jsonRawResponse = mapper.writeValueAsString(response);
-            return new CityResponseWrapper(response, jsonRawResponse);
-        } catch (IOException e) {
-            log.error("DB file access error", e);
-        } catch (GeoIp2Exception e) {
-            log.error("GEO DB error", e);
-        }
-        return null;
+    public CityResponse getLocationInfoByIp(InetAddress ipAddress) throws IOException, GeoIp2Exception {
+        return reader.city(ipAddress);
     }
 }

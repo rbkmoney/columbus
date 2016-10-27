@@ -1,15 +1,18 @@
 package com.rbkmoney.columbus;
 
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
 import com.rbkmoney.columbus.dao.CityLocationsDao;
 import com.rbkmoney.columbus.dao.GeoIpDao;
 import com.rbkmoney.columbus.model.CityLocation;
-import com.rbkmoney.columbus.model.CityResponseWrapper;
 import com.rbkmoney.columbus.model.Lang;
 import com.rbkmoney.columbus.service.GeoIpServiceHandler;
 import com.rbkmoney.columbus.service.GeoService;
-import com.rbkmoney.damsel.geo_ip.CantDetermineLocation;
+import com.rbkmoney.columbus.util.IpAddresUtils;
+import com.rbkmoney.damsel.base.InvalidRequest;
 import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
 import com.rbkmoney.damsel.geo_ip.LocationInfo;
+import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
 import org.apache.thrift.TException;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,20 +21,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class GeoServiceTest {
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();
+    public static final String IP_MOSCOW = "94.159.54.234";
+    public static final String IP_LONDON = "212.71.235.130";
+    public static final int GEOID_KAMIZIAK = 553248;
+    public static final int GEOID_MOSCOW = 524901;
+    public static final int GEOID_LONDON= 2643743;
     static {
-        IP_TO_CITY.put("94.159.54.234", "Moscow");
-        IP_TO_CITY.put("212.71.235.130", "London");
+        IP_TO_CITY.put(IP_MOSCOW, "Moscow");
+        IP_TO_CITY.put(IP_LONDON, "London");
     }
 
     @Autowired
@@ -51,14 +58,12 @@ public class GeoServiceTest {
     }
 
     @Test
-    public void testGetLocationException(){
+    public void testGetLocationException() throws TException {
         try {
             handler.getLocation("null");
-            fail("CantDetermineLocation should be thrown");
-        }catch (CantDetermineLocation e){
-            //success
-        } catch (Exception e) {
-            fail("CantDetermineLocation should be thrown");
+            fail("InvalidRequest expected.");
+        } catch (InvalidRequest ir){
+            assertEquals("null", ir.getErrors().get(0));
         }
     }
 
@@ -66,65 +71,62 @@ public class GeoServiceTest {
     public void testGetLocationNullCity() throws TException {
         LocationInfo info = handler.getLocation("89.218.51.9");
 
-        assertEquals(info.getCityGeoId(), GeoIpServiceHandler.UNDEFINED_GEO_ID);
-        assertEquals(info.getCityGeoId(), GeoIpServiceHandler.UNDEFINED_GEO_ID);
+        assertEquals(info.getCityGeoId(), geo_ipConstants.GEO_ID_UNKNOWN);
+        assertEquals(info.getCityGeoId(), geo_ipConstants.GEO_ID_UNKNOWN);
     }
 
     @Test
     public void testGetLocationNullValuesInMap() throws TException {
-        final int kamiziak = 553248;
-        final int moscow = 524901;
         final int unknown = 0;
-        final Integer[] ids = {kamiziak, moscow, unknown} ;
+        final Integer[] ids = {GEOID_KAMIZIAK, GEOID_MOSCOW, unknown} ;
         Map<Integer, GeoIDInfo> info = handler.getLocationInfo(Set(ids), "ru");
 
         assertEquals(info.size(), 3);
-        assertEquals(info.get(kamiziak).city_name, "Камызяк");
-        assertEquals(info.get(moscow).city_name, "Москва");
+        assertEquals(info.get(GEOID_KAMIZIAK).city_name, "Камызяк");
+        assertEquals(info.get(GEOID_MOSCOW).city_name, "Москва");
         assertEquals(info.get(unknown), null);
     }
 
     @Test
     public void testGetLocationNullValuesInNameMap() throws TException {
-        final int kamiziak = 553248;
-        final int moscow = 524901;
         final int unknown = 0;
-        final Integer[] ids = {kamiziak, moscow, unknown} ;
+        final Integer[] ids = {GEOID_KAMIZIAK, GEOID_MOSCOW, unknown} ;
         Map<Integer, String> info = handler.getLocationName(Set(ids), "ru");
 
         assertEquals(info.size(), 3);
-        assertEquals(info.get(kamiziak), "Камызяк");
-        assertEquals(info.get(moscow), "Москва");
+        assertEquals(info.get(GEOID_KAMIZIAK), "Камызяк");
+        assertEquals(info.get(GEOID_MOSCOW), "Москва");
         assertEquals(info.get(unknown), null);
     }
 
     @Test
-    public void testWrongIp() {
-        CityResponseWrapper undefinedLocation = geoIpDao.getLocationInfoByIp("null");
-        assertEquals(null, undefinedLocation);
-    }
-
-    @Test
-    public void getLocationByIp(){
+    public void getLocationByIp() throws IOException, GeoIp2Exception {
         for(String ip: IP_TO_CITY.keySet()){
-            CityResponseWrapper locationInfo = service.getLocationByIp(ip);
-            assertEquals(locationInfo.getResponse().getCity().getNames().get(Lang.ENG.getValue()), IP_TO_CITY.get(ip));
+            CityResponse cityResponse = service.getLocationByIp(IpAddresUtils.convert(ip));
+            assertEquals(cityResponse.getCity().getNames().get(Lang.ENG.getValue()), IP_TO_CITY.get(ip));
         }
     }
 
     @Test
+    public void getLocationsByIps() throws TException {
+        Map<String, LocationInfo> map = handler.getLocations(IP_TO_CITY.keySet());
+
+        assertEquals(map.size(), 2);
+        assertEquals(map.get(IP_LONDON).getCityGeoId(), GEOID_LONDON);
+        assertEquals(map.get(IP_MOSCOW).getCityGeoId(), GEOID_MOSCOW);
+    }
+
+    @Test
     public void getLocationByGeoIds(){
-        final int kamiziak = 553248;
-        final int moscow = 524901;
-        final Integer[] ids = {kamiziak,moscow} ;
+        final Integer[] ids = {GEOID_KAMIZIAK,GEOID_MOSCOW} ;
         List<CityLocation> list = cityLocationsDao.getByGeoIds(Set(ids), Lang.RU);
 
         assertEquals(2, list.size());
         assertTrue(list.get(0).getGeonameId() == ids[0] || list.get(0).getGeonameId() == ids[1]);
         assertTrue(list.get(1).getGeonameId() == ids[0] || list.get(1).getGeonameId() == ids[1]);
 
-        assertEquals("Камызяк",getById(list, kamiziak).getCityName());
-        assertEquals("Москва",getById(list, moscow).getCityName());
+        assertEquals("Камызяк",getById(list, GEOID_KAMIZIAK).getCityName());
+        assertEquals("Москва",getById(list, GEOID_MOSCOW).getCityName());
     }
 
     private static CityLocation getById(List<CityLocation> list, int id){
