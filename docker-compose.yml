@@ -1,0 +1,30 @@
+postgres:
+  image: dr.rbkmoney.com/rbkmoney/postgres-geodata:7535abe1dcd9942f9289afd5f665dc9e39c56f90
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: columbus
+  entrypoint:
+   - /docker-entrypoint.sh
+   - postgres
+  ports:
+    - '5432:5432'
+  volumes:
+#    - ./geo_data/geo_data:/var/geodata
+    - ~/.docker-volumes/rbkmoney/columbus/postgresql/data:/var/lib/postgresql/data
+
+#columbus:
+#  build: target
+#  links:
+#   - postgres
+#  ports:
+#   - "8022:8022"
+#  volumes_from:
+#   - postgres:ro
+#  entrypoint:
+#   - java
+#   - -jar
+#   - /opt/columbus/columbus.jar
+#   - --db.jdbc.url=jdbc:postgresql://postgres:5432/columbus
+#   - --geo.db.file.path=file:/var/geodata/GeoLite2-city.mmdb
+
