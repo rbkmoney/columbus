@@ -1,0 +1,11 @@
+postgres:
+  image: dr.rbkmoney.com/rbkmoney/postgres-geodata:7535abe1dcd9942f9289afd5f665dc9e39c56f90
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: postgres
+  entrypoint:
+   - /docker-entrypoint.sh
+   - postgres
+  ports:
+    - '5000:5432'

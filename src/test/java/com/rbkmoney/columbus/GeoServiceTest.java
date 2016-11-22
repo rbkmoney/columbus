@@ -2,6 +2,9 @@ package com.rbkmoney.columbus;
 
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
+import com.palantir.docker.compose.DockerComposeRule;
+import com.palantir.docker.compose.connection.waiting.HealthChecks;
+import com.palantir.docker.compose.logging.FileLogCollector;
 import com.rbkmoney.columbus.dao.CityLocationsDao;
 import com.rbkmoney.columbus.dao.GeoIpDao;
 import com.rbkmoney.columbus.model.CityLocation;
@@ -15,21 +18,34 @@ import com.rbkmoney.damsel.geo_ip.LocationInfo;
 import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
 import org.apache.thrift.TException;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class GeoServiceTest {
+    
+    @ClassRule
+    public static DockerComposeRule docker = DockerComposeRule.builder()
+            .file("src/test/resources/docker-compose.yml")
+            .logCollector(new FileLogCollector(new File("target/pglog")))
+            .waitingForService("postgres", HealthChecks.toHaveAllPortsOpen())
+            .build();
+
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();
     public static final String IP_MOSCOW = "94.159.54.234";
     public static final String IP_LONDON = "212.71.235.130";
