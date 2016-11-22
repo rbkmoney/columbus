@@ -142,7 +142,7 @@
                 <directory>${project.basedir}</directory>
                 <targetPath>${project.build.directory}</targetPath>
                 <includes>
-                    <include>geo_data/geo_data/GeoLite2-city.mmdb</include>
+                    <include>GeoLite2-city.mmdb</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>

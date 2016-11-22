@@ -1,5 +1,5 @@
 postgres:
-  image: dr.rbkmoney.com/rbkmoney/postgres-geodata:7535abe1dcd9942f9289afd5f665dc9e39c56f90
+  image: dr.rbkmoney.com/rbkmoney/postgres-geodata:8b8df081f3f23c10079e9a41b13ce7ca2f39cd3c
   environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
