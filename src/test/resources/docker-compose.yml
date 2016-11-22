@@ -8,4 +8,4 @@ postgres:
    - /docker-entrypoint.sh
    - postgres
   ports:
-    - '5000:5432'
+    - '5432'

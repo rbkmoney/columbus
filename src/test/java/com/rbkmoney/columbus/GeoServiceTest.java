@@ -3,6 +3,7 @@ package com.rbkmoney.columbus;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.palantir.docker.compose.DockerComposeRule;
+import com.palantir.docker.compose.connection.DockerPort;
 import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import com.palantir.docker.compose.logging.FileLogCollector;
 import com.rbkmoney.columbus.dao.CityLocationsDao;
@@ -16,16 +17,21 @@ import com.rbkmoney.damsel.base.InvalidRequest;
 import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
 import com.rbkmoney.damsel.geo_ip.LocationInfo;
 import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.thrift.TException;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -34,11 +40,28 @@ import static org.junit.Assert.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 public class GeoServiceTest {
-    
+
+    @TestConfiguration
+    static class Config {
+        @Bean
+        public DataSource dataSource() {
+            DockerPort postgres = docker.containers().container("postgres").port(5432);
+
+            return DataSourceBuilder
+                    .create()
+                    .type(HikariDataSource.class)
+                    .username("postgres")
+                    .password("postgres")
+                    .driverClassName("org.postgresql.Driver")
+                    .url(postgres.inFormat("jdbc:postgresql://$HOST:$EXTERNAL_PORT/postgres"))
+                    .build();
+        }
+    }
+
     @ClassRule
     public static DockerComposeRule docker = DockerComposeRule.builder()
             .file("src/test/resources/docker-compose.yml")
