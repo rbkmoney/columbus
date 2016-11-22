@@ -13,6 +13,5 @@ LABEL com.rbkmoney.@artifactId@.parent=service-java \
     com.rbkmoney.@artifactId@.parent_tag=@dockerfile.base.service.tag@ \
     com.rbkmoney.@artifactId@.commit_id=@git.revision@ \
     com.rbkmoney.@artifactId@.commit_number=@git.commitsCount@ \
-    com.rbkmoney.@artifactId@.branch=@git.branch@ \
-    com.rbkmoney.@artifactId@.mvn.java=@mvn.java.version@
+    com.rbkmoney.@artifactId@.branch=@git.branch@
 WORKDIR /opt/@artifactId@
