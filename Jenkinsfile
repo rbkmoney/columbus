@@ -11,6 +11,7 @@ build('columbus', 'docker-host') {
         withCredentials([[$class: 'FileBinding', credentialsId: 'java-maven-settings.xml', variable: 'SETTINGS_XML']]) {
             def mvn_command_arguments = ' --batch-mode --settings  $SETTINGS_XML -P ci' +
                     "-Ddockerfile.base.service.tag=${baseImageTag} " +
+                    "-Dgit.branch=${baseImageTag}=${env.BRANCH_NAME} " +
                     " ${mvnArgs}"
             if (env.BRANCH_NAME == 'master') {
                 sh 'mvn deploy' + mvn_command_arguments
