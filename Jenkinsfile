@@ -2,14 +2,6 @@
 build('columbus', 'docker-host') {
     checkoutRepo()
 
-    //columbus specific
-    runStage('load submodules') {
-        withGithubSshCredentials {
-            sh 'git submodule init'
-            sh 'git submodule update'
-        }
-    }
-
     def serviceName = "columbus"
     def baseImageTag = "70f9fa4ba9bb06cc36b292862ab0555f3bad6321"
     def mvnArgs = '-DjvmArgs="-Xmx256m"'

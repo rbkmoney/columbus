@@ -2,7 +2,7 @@
 FROM dr.rbkmoney.com/rbkmoney/service-java:@dockerfile.base.service.tag@
 MAINTAINER Poluektov Yevgeniy <e.poluektov@rbkmoney.com>
 
-COPY geo_data/geo_data/GeoLite2-city.mmdb /maxmind.mmdb
+COPY GeoLite2-city.mmdb /maxmind.mmdb
 COPY @artifactId@-@version@.jar /opt/@artifactId@/@artifactId@.jar
 
 ENTRYPOINT ["java", "-Xmx256m", "-jar","/opt/@artifactId@/@artifactId@.jar"]
