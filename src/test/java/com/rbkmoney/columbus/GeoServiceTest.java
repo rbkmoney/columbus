@@ -33,7 +33,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 @Import(IntegrationBaseRule.class)
-@Ignore
+//@Ignore
 public class GeoServiceTest {
 
     @ClassRule
