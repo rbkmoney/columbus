@@ -5,6 +5,7 @@ import com.palantir.docker.compose.connection.DockerPort;
 import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import com.palantir.docker.compose.logging.FileLogCollector;
 import com.zaxxer.hikari.HikariDataSource;
+import org.joda.time.Duration;
 import org.junit.rules.ExternalResource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -19,7 +20,7 @@ public class IntegrationBaseRule extends ExternalResource {
     public static DockerComposeRule docker = DockerComposeRule.builder()
             .file("src/test/resources/docker-compose.yml")
             .logCollector(new FileLogCollector(new File("target/pglog")))
-            .waitingForService("postgres", HealthChecks.toHaveAllPortsOpen())
+            .waitingForService("postgres", HealthChecks.toHaveAllPortsOpen(), Duration.standardMinutes(5))
             .build();
 
 
