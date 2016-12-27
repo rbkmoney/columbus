@@ -14,10 +14,7 @@ import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
 import com.rbkmoney.damsel.geo_ip.LocationInfo;
 import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
 import org.apache.thrift.TException;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,6 +60,19 @@ public class GeoServiceTest {
     GeoService service;
 
     GeoIpServiceHandler handler;
+
+    @BeforeClass
+    // it's a HACK !!!!!
+    // Waiting for container to start. reproduced on Mac OS
+    public static void beforeClass(){
+        try {
+            System.out.println("start");
+            Thread.sleep(5000);
+            System.out.println("end");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Before
     public void before(){
