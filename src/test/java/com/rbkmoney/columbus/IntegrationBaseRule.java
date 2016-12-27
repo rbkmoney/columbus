@@ -2,8 +2,10 @@ package com.rbkmoney.columbus;
 
 import com.palantir.docker.compose.DockerComposeRule;
 import com.palantir.docker.compose.connection.DockerPort;
+import com.palantir.docker.compose.connection.waiting.ClusterWait;
 import com.palantir.docker.compose.connection.waiting.HealthChecks;
-import com.palantir.docker.compose.logging.FileLogCollector;
+import com.rbkmoney.columbus.check.LogInterceptor;
+import com.rbkmoney.columbus.check.PostgresIsReadyCheck;
 import com.zaxxer.hikari.HikariDataSource;
 import org.joda.time.Duration;
 import org.junit.rules.ExternalResource;
@@ -12,14 +14,15 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
-import java.io.File;
 
 @TestConfiguration
 public class IntegrationBaseRule extends ExternalResource {
+    public  static LogInterceptor logInterceptor = new LogInterceptor();
 
     public static DockerComposeRule docker = DockerComposeRule.builder()
             .file("src/test/resources/docker-compose.yml")
-            .logCollector(new FileLogCollector(new File("target/pglog")))
+            .logCollector(logInterceptor)
+            .addClusterWait(new ClusterWait(new PostgresIsReadyCheck(logInterceptor.getIn()), Duration.standardMinutes(2)))
             .waitingForService("postgres", HealthChecks.toHaveAllPortsOpen())
             .build();
 

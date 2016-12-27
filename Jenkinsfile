@@ -1,5 +1,5 @@
 #!groovy
-build('columbus', 'docker-host') {
+build('columbus', 'java-maven') {
     checkoutRepo()
 
     def serviceName = "columbus"
