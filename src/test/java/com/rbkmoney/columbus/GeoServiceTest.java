@@ -16,6 +16,7 @@ import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
 import org.apache.thrift.TException;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 @Import(IntegrationBaseRule.class)
+@Ignore
 public class GeoServiceTest {
 
     @ClassRule
