@@ -5,7 +5,7 @@ MAINTAINER Poluektov Yevgeniy <e.poluektov@rbkmoney.com>
 COPY GeoLite2-city.mmdb /maxmind.mmdb
 COPY @artifactId@-@version@.jar /opt/@artifactId@/@artifactId@.jar
 
-ENTRYPOINT ["java", "-Xmx256m", "-jar","/opt/@artifactId@/@artifactId@.jar"]
+CMD ["java", "-Xmx256m", "-jar","/opt/@artifactId@/@artifactId@.jar"]
 
 EXPOSE @server.port@
 
