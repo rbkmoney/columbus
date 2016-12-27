@@ -20,7 +20,7 @@ public class IntegrationBaseRule extends ExternalResource {
     public static DockerComposeRule docker = DockerComposeRule.builder()
             .file("src/test/resources/docker-compose.yml")
             .logCollector(new FileLogCollector(new File("target/pglog")))
-            .waitingForService("postgres", HealthChecks.toHaveAllPortsOpen(), Duration.standardMinutes(5))
+            .waitingForService("postgres", HealthChecks.toHaveAllPortsOpen())
             .build();
 
 
