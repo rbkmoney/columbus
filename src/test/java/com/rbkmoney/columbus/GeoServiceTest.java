@@ -66,9 +66,9 @@ public class GeoServiceTest {
     // Waiting for container to start. reproduced on Mac OS
     public static void beforeClass(){
         try {
-            System.out.println("start");
+            System.out.println("Start waiting");
             Thread.sleep(5000);
-            System.out.println("end");
+            System.out.println("End waiting");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

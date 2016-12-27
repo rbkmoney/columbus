@@ -113,13 +113,13 @@
             <groupId>com.palantir.docker.compose</groupId>
             <artifactId>docker-compose-rule</artifactId>
             <version>0.28.1</version>
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>org.hamcrest</groupId>-->
-                    <!--<artifactId>hamcrest-library</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-library</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
