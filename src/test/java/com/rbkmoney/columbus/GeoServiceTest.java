@@ -15,21 +15,32 @@ import com.rbkmoney.damsel.geo_ip.LocationInfo;
 import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
 import org.apache.thrift.TException;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@TestPropertySource(locations="classpath:test.properties")
+@Import(IntegrationBaseRule.class)
+//@Ignore
 public class GeoServiceTest {
+
+    @ClassRule
+    public static IntegrationBaseRule rule = new IntegrationBaseRule();
+
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();
     public static final String IP_MOSCOW = "94.159.54.234";
     public static final String IP_LONDON = "212.71.235.130";

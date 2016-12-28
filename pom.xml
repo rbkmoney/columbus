@@ -13,7 +13,7 @@
 
     <groupId>com.rbkmoney.columbus</groupId>
     <artifactId>columbus</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
         <server.port>8022</server.port>
@@ -23,42 +23,7 @@
         <custom.jooq.version>3.8.4</custom.jooq.version>
         <dockerfile.Template>GENERATED DOCKER FILE</dockerfile.Template>
         <dockerfile.base.service.tag>70f9fa4ba9bb06cc36b292862ab0555f3bad6321</dockerfile.base.service.tag>
-        <dockerfile.build.container.tag>UNDEFINED</dockerfile.build.container.tag>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <columbus.db.url>jdbc:postgresql://localhost:5432/columbus</columbus.db.url>
-                <columbus.db.user>postgres</columbus.db.user>
-                <columbus.db.password>postgres</columbus.db.password>
-                <columbus.db.schema>clb</columbus.db.schema>
-                <flyway.db.url>${columbus.db.url}</flyway.db.url>
-                <flyway.user>${columbus.db.user}</flyway.user>
-                <flyway.password>${columbus.db.password}</flyway.password>
-                <geo.db.file.path>file:${project.basedir}/geo_data/geo_data/GeoLite2-city.mmdb</geo.db.file.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>ci</id>
-            <properties>
-                <columbus.db.url>jdbc:postgresql://clbdb:5432/columbus</columbus.db.url>
-                <columbus.db.user>postgres</columbus.db.user>
-                <columbus.db.password>postgres</columbus.db.password>
-                <columbus.db.schema>clb</columbus.db.schema>
-                <flyway.db.url>${columbus.db.url}</flyway.db.url>
-                <flyway.user>${columbus.db.user}</flyway.user>
-                <flyway.password>${columbus.db.password}</flyway.password>
-                <!--todo: change to correct name-->
-                <geo.db.file.path>file://var/geodata/GeoLite2-city.mmdb</geo.db.file.path>
-            </properties>
-        </profile>
-    </profiles>
-
 
     <dependencies>
         <!--Thrirdparty libs-->
@@ -144,6 +109,18 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.palantir.docker.compose</groupId>
+            <artifactId>docker-compose-rule</artifactId>
+            <version>0.28.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-library</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -160,6 +137,14 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <targetPath>${project.build.directory}</targetPath>
+                <includes>
+                    <include>GeoLite2-city.mmdb</include>
+                </includes>
+                <filtering>false</filtering>
             </resource>
         </resources>
 
@@ -188,4 +173,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <!--
+    download artifacts from https://dl.bintray.com/palantir/releases
+    mvn deploy:deploy-file -DpomFile=docker-compose-rule-0.27.0.pom   -Dfile=docker-compose-rule-0.27.0.jar  \
+     -DrepositoryId=central   -Durl=http://java-nexus.msk1.rbkmoney.net:8081/nexus/content/repositories/thirdparty/ \
+      -Dsources=docker-compose-rule-0.27.0-sources.jar -Djavadoc=docker-compose-rule-0.27.0-javadoc.jar
+    -->
 </project>
