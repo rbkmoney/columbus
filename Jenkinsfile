@@ -3,7 +3,7 @@ build('columbus', 'java-maven') {
     checkoutRepo()
 
     def serviceName = "columbus"
-    def baseImageTag = "70f9fa4ba9bb06cc36b292862ab0555f3bad6321"
+    def baseImageTag = "f26fcc19d1941ab74f1c72dd8a408be17a769333"
     def mvnArgs = '-DjvmArgs="-Xmx256m"'
 
     // Run mvn and generate docker file

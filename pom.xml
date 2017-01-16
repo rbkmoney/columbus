@@ -13,7 +13,7 @@
 
     <groupId>com.rbkmoney.columbus</groupId>
     <artifactId>columbus</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <properties>
         <server.port>8022</server.port>
@@ -22,7 +22,7 @@
         <custom.flyway.version>4.0.3</custom.flyway.version>
         <custom.jooq.version>3.8.4</custom.jooq.version>
         <dockerfile.Template>GENERATED DOCKER FILE</dockerfile.Template>
-        <dockerfile.base.service.tag>70f9fa4ba9bb06cc36b292862ab0555f3bad6321</dockerfile.base.service.tag>
+        <dockerfile.base.service.tag>f26fcc19d1941ab74f1c72dd8a408be17a769333</dockerfile.base.service.tag>
     </properties>
 
     <dependencies>
