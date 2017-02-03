@@ -6,12 +6,14 @@ import com.rbkmoney.columbus.dao.CityLocationsDao;
 import com.rbkmoney.columbus.dao.GeoIpDao;
 import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.model.Lang;
+import com.rbkmoney.damsel.base.InvalidRequest;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +31,10 @@ public class GeoService {
     }
 
     public List<CityLocation> getLocationName(Set<Integer> geoIdset, String lang) throws TException {
+        Lang language = Lang.getByAbbreviation(lang);
+        if (language.equals(Lang.UNKNOWN)) {
+            throw new InvalidRequest(Collections.singletonList("Unknown language : " + lang));
+        }
         return cityLocationsDao.getByGeoIds(geoIdset, Lang.getByAbbreviation(lang));
     }
 }
