@@ -13,7 +13,7 @@
 
     <groupId>com.rbkmoney.columbus</groupId>
     <artifactId>columbus</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.3-SNAPSHOT</version>
 
     <properties>
         <server.port>8022</server.port>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>damsel</artifactId>
-            <version>1.101-a8be468</version>
+            <version>1.131-a603319</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

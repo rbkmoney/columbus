@@ -18,22 +18,25 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.rbkmoney.damsel.geo_ip.geo_ipConstants.GEO_ID_UNKNOWN;
+
 public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private ObjectMapper mapper = new ObjectMapper();
     private GeoService service;
+    private static String UNKNOWN = "UNKNOWN";
 
     public GeoIpServiceHandler(GeoService service) {
         this.service = service;
     }
 
     @Override
-    public LocationInfo getLocation(String ip) throws  InvalidRequest, TException {
-        if(!IpAddresUtils.isValid(ip)){
+    public LocationInfo getLocation(String ip) throws InvalidRequest, TException {
+        if (!IpAddresUtils.isValid(ip)) {
             throw new InvalidRequest(Arrays.asList(ip));
         }
-       
+
         CityResponse cityResponse = null;
         String json = "";
         try {
@@ -43,31 +46,32 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             log.warn("IP address {} not found in maxmind db.");
         } catch (JsonProcessingException e) {
             logAndThrow("CityResponse cannot be converted to JSON.", e);
-        } catch (IOException|GeoIp2Exception e) {
-            logAndThrow("Unlonwn IO exception.", e);
-        } 
+        } catch (IOException | GeoIp2Exception e) {
+            logAndThrow("Unknown IO exception.", e);
+        }
 
-        int cityId = geo_ipConstants.GEO_ID_UNKNOWN;
-        int countryId = geo_ipConstants.GEO_ID_UNKNOWN;
-        if(cityResponse != null && cityResponse.getCity().getGeoNameId() != null){
+        int cityId = GEO_ID_UNKNOWN;
+        int countryId = GEO_ID_UNKNOWN;
+        if (cityResponse != null && cityResponse.getCity().getGeoNameId() != null) {
             cityId = cityResponse.getCity().getGeoNameId();
         }
-        if(cityResponse != null  && cityResponse.getCountry().getGeoNameId() != null){
+        if (cityResponse != null && cityResponse.getCountry().getGeoNameId() != null) {
             countryId = cityResponse.getCountry().getGeoNameId();
         }
-
-        return new LocationInfo(cityId, countryId, json);
+        LocationInfo locationInfo = new LocationInfo(cityId, countryId);
+        locationInfo.setRawResponse(json);
+        return locationInfo;
     }
 
     @Override
     public Map<String, LocationInfo> getLocations(Set<String> set) throws InvalidRequest, TException {
         List<String> invalidIps = set.stream().filter(ip -> !IpAddresUtils.isValid(ip)).collect(Collectors.toList());
-        if(invalidIps.size() > 0){
+        if (invalidIps.size() > 0) {
             throw new InvalidRequest(invalidIps);
         }
 
         Map<String, LocationInfo> map = new HashMap<>();
-        for(String ip: set){
+        for (String ip : set) {
             map.put(ip, getLocation(ip));
         }
 
@@ -83,40 +87,46 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             geoIDInfo.setCityName(cl.getCityName());
 
             Set<SubdivisionInfo> subdivisionInfoSet = new HashSet<>();
-            if(!StringUtils.isEmpty(cl.getSubdivision1Name())){
-                subdivisionInfoSet.add(new SubdivisionInfo((short) 1,cl.getSubdivision1Name()));
+            if (!StringUtils.isEmpty(cl.getSubdivision1Name())) {
+                subdivisionInfoSet.add(new SubdivisionInfo((short) 1, cl.getSubdivision1Name()));
             }
-            if(!StringUtils.isEmpty(cl.getSubdivision1Name())){
-                subdivisionInfoSet.add(new SubdivisionInfo((short) 1,cl.getSubdivision1Name()));
+            if (!StringUtils.isEmpty(cl.getSubdivision1Name())) {
+                subdivisionInfoSet.add(new SubdivisionInfo((short) 1, cl.getSubdivision1Name()));
             }
-            if(!subdivisionInfoSet.isEmpty()){
+            if (!subdivisionInfoSet.isEmpty()) {
                 geoIDInfo.setSubdivisions(subdivisionInfoSet);
             }
 
             return geoIDInfo;
-        }).collect(Collectors.toMap(GeoIDInfo::getGeonameId, v->v));
+        }).collect(Collectors.toMap(GeoIDInfo::getGeonameId, v -> v));
 
-        return putEmptyValues(map, geo_ids, null);
+        return putEmptyValues(map, geo_ids, buildUnknownGeoIdInfo());
     }
 
     @Override
     public Map<Integer, String> getLocationName(Set<Integer> geo_ids, String lang) throws InvalidRequest, TException {
         Map<Integer, String> map = service.getLocationName(geo_ids, lang).stream()
                 .collect(Collectors.toMap(CityLocation::getGeonameId, CityLocation::getName));
-        return putEmptyValues(map, geo_ids, null);
+        return putEmptyValues(map, geo_ids, UNKNOWN);
     }
 
+    public static GeoIDInfo buildUnknownGeoIdInfo() {
+        GeoIDInfo geoIDInfo = new GeoIDInfo();
+        geoIDInfo.setGeonameId(GEO_ID_UNKNOWN);
+        geoIDInfo.setCountryName(UNKNOWN);
+        return geoIDInfo;
+    }
 
     /*
     * put(key, emptyValue) for keys from set which are not exist in map.keySet()
     * */
-    private <K,V> Map<K, V> putEmptyValues(Map<K, V> map, Set<K> set, V emptyValue){
+    private <K, V> Map<K, V> putEmptyValues(Map<K, V> map, Set<K> set, V emptyValue) {
         Set<K> nullKeys = new HashSet<>(set);
         nullKeys.removeAll(map.keySet());
 
-        Map<K,V> resultMap = new HashMap<>(map);
+        Map<K, V> resultMap = new HashMap<>(map);
 
-        for(K key: nullKeys){
+        for (K key : nullKeys) {
             resultMap.put(key, emptyValue);
         }
 
