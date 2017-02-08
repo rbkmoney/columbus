@@ -33,15 +33,10 @@ import static org.junit.Assert.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
-@TestPropertySource(locations = "classpath:test.properties")
-@Import(IntegrationBaseRule.class)
+@TestPropertySource(locations="classpath:test.properties")
 //@Ignore
-public class GeoServiceTest {
+public class GeoServiceTest extends AbstractIntegrationTest{
 
-    @ClassRule
-    public static IntegrationBaseRule rule = new IntegrationBaseRule();
 
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();
     public static final String IP_MOSCOW = "94.159.54.234";
