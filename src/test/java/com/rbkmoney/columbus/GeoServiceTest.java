@@ -12,17 +12,11 @@ import com.rbkmoney.columbus.util.IpAddresUtils;
 import com.rbkmoney.damsel.base.InvalidRequest;
 import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
 import com.rbkmoney.damsel.geo_ip.LocationInfo;
-import com.rbkmoney.damsel.geo_ip.geo_ipConstants;
 import org.apache.thrift.TException;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,7 +24,6 @@ import java.util.*;
 import static com.rbkmoney.columbus.service.GeoIpServiceHandler.buildUnknownGeoIdInfo;
 import static com.rbkmoney.damsel.geo_ip.geo_ipConstants.GEO_ID_UNKNOWN;
 import static org.junit.Assert.*;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
 @TestPropertySource(locations="classpath:test.properties")
