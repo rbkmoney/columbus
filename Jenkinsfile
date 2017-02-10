@@ -3,14 +3,12 @@ build('columbus', 'java-maven') {
     checkoutRepo()
 
     def serviceName = "columbus"
-    def baseImageTag = "f26fcc19d1941ab74f1c72dd8a408be17a769333"
     def mvnArgs = '-DjvmArgs="-Xmx256m"'
 
     // Run mvn and generate docker file
     runStage('Maven package') {
         withCredentials([[$class: 'FileBinding', credentialsId: 'java-maven-settings.xml', variable: 'SETTINGS_XML']]) {
             def mvn_command_arguments = ' --batch-mode --settings  $SETTINGS_XML -P ci ' +
-                    " -Ddockerfile.base.service.tag=${baseImageTag} " +
                     " -Dgit.branch=${env.BRANCH_NAME} " +
                     " ${mvnArgs}"
             if (env.BRANCH_NAME == 'master') {
