@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.rbkmoney</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.1.RELEASE</version>
+        <version>1.5.1.RELEASE</version>
     </parent>
 
     <groupId>com.rbkmoney.columbus</groupId>
@@ -18,7 +18,7 @@
     <properties>
         <server.port>8022</server.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <postgresql.jdbc.version>9.4.1208</postgresql.jdbc.version>
+        <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
         <custom.flyway.version>4.0.3</custom.flyway.version>
         <custom.jooq.version>3.8.4</custom.jooq.version>
         <dockerfile.Template>GENERATED DOCKER FILE</dockerfile.Template>
@@ -30,6 +30,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -84,11 +90,12 @@
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>damsel</artifactId>
-            <version>1.131-a603319</version>
+            <version>1.132-27bc11c</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>1.4.1</version>
         </dependency>
 
         <!--Logs-->
@@ -101,7 +108,7 @@
         <dependency>
             <groupId>com.rbkmoney.logback</groupId>
             <artifactId>nop-rolling</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <!--Test libs-->
         <dependency>
@@ -130,7 +137,6 @@
                 <targetPath>${project.build.directory}</targetPath>
                 <includes>
                     <include>Dockerfile</include>
-                    <include>containerpilot.json</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
