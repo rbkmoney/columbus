@@ -2,7 +2,7 @@
 build('columbus', 'java-maven') {
     checkoutRepo()
 
-    def serviceName = "columbus"
+    def serviceName = env.REPO_NAME
     def mvnArgs = '-DjvmArgs="-Xmx256m"'
 
     // Run mvn and generate docker file
