@@ -93,10 +93,9 @@ public class GeoServiceTest extends AbstractIntegrationTest{
         final Integer[] ids = {GEOID_KAMIZIAK, GEOID_MOSCOW, unknown};
         Map<Integer, GeoIDInfo> info = handler.getLocationInfo(Set(ids), "ru");
 
-        assertEquals(info.size(), 3);
+        assertEquals(info.size(), 2);
         assertEquals("Камызяк", info.get(GEOID_KAMIZIAK).city_name);
         assertEquals("Москва", info.get(GEOID_MOSCOW).city_name);
-        assertEquals(buildUnknownGeoIdInfo(), info.get(unknown));
     }
 
     @Test
@@ -105,10 +104,17 @@ public class GeoServiceTest extends AbstractIntegrationTest{
         final Integer[] ids = {GEOID_KAMIZIAK, GEOID_MOSCOW, unknown};
         Map<Integer, String> info = handler.getLocationName(Set(ids), "ru");
 
-        assertEquals(info.size(), 3);
+        assertEquals(info.size(), 2);
         assertEquals("Камызяк", info.get(GEOID_KAMIZIAK));
         assertEquals("Москва", info.get(GEOID_MOSCOW));
-        assertEquals("UNKNOWN", info.get(unknown));
+    }
+
+    @Test
+    public void testGetLocationUnknownId() throws TException {
+        final int unknown = 0;
+        final Integer[] ids = {unknown};
+        Map<Integer, String> info = handler.getLocationName(Set(ids), "ru");
+        assertEquals(info.size(), 0);
     }
 
     @Test
