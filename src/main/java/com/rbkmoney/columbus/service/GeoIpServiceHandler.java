@@ -81,9 +81,9 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
     @Override
     public Map<Integer, GeoIDInfo> getLocationInfo(Set<Integer> geo_ids, String lang) throws InvalidRequest, TException {
         List<CityLocation> cityLocations = service.getLocationName(geo_ids, lang);
-
-        Map<Integer, GeoIDInfo> map = cityLocations.stream().map(cl -> {
-            GeoIDInfo geoIDInfo = new GeoIDInfo(cl.getGeonameId(), cl.getCountryName());
+        Map<Integer, GeoIDInfo> result = new HashMap<Integer, GeoIDInfo>();
+        cityLocations.forEach(cl -> {
+            GeoIDInfo geoIDInfo = new GeoIDInfo(cl.getCountryName());
             geoIDInfo.setCityName(cl.getCityName());
 
             Set<SubdivisionInfo> subdivisionInfoSet = new HashSet<>();
@@ -96,23 +96,21 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             if (!subdivisionInfoSet.isEmpty()) {
                 geoIDInfo.setSubdivisions(subdivisionInfoSet);
             }
-
-            return geoIDInfo;
-        }).collect(Collectors.toMap(GeoIDInfo::getGeonameId, v -> v));
-
-        return putEmptyValues(map, geo_ids, buildUnknownGeoIdInfo());
+            result.put(cl.getGeonameId(), geoIDInfo);
+        });
+        return result;
     }
 
+    //* Если передан неизвестный geoID, он не попадет в возвращаемый результат
     @Override
     public Map<Integer, String> getLocationName(Set<Integer> geo_ids, String lang) throws InvalidRequest, TException {
-        Map<Integer, String> map = service.getLocationName(geo_ids, lang).stream()
+        return service.getLocationName(geo_ids, lang).stream()
                 .collect(Collectors.toMap(CityLocation::getGeonameId, CityLocation::getName));
-        return putEmptyValues(map, geo_ids, UNKNOWN);
+
     }
 
     public static GeoIDInfo buildUnknownGeoIdInfo() {
         GeoIDInfo geoIDInfo = new GeoIDInfo();
-        geoIDInfo.setGeonameId(GEO_ID_UNKNOWN);
         geoIDInfo.setCountryName(UNKNOWN);
         return geoIDInfo;
     }

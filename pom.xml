@@ -17,7 +17,7 @@
 
     <properties>
         <project.maintainer>Poluektov Yevgeniy &lt;e.poluektov@rbkmoney.com&gt;</project.maintainer>
-        <damsel.version>1.132-27bc11c</damsel.version>
+        <damsel.version>1.141-6ba6971</damsel.version>
         <shared.resources.version>0.2.1</shared.resources.version>
         <server.port>8022</server.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
