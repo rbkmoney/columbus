@@ -25,7 +25,7 @@
         <custom.flyway.version>4.0.3</custom.flyway.version>
         <custom.jooq.version>3.8.4</custom.jooq.version>
         <dockerfile.Template>GENERATED DOCKER FILE</dockerfile.Template>
-        <dockerfile.base.service.tag>f26fcc19d1941ab74f1c72dd8a408be17a769333</dockerfile.base.service.tag>
+        <dockerfile.base.service.tag>60ec6caf5c52778c9e89075656cca2ceeee4d0dd</dockerfile.base.service.tag>
     </properties>
 
     <dependencies>
