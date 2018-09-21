@@ -13,7 +13,7 @@
 
     <groupId>com.rbkmoney.columbus</groupId>
     <artifactId>columbus</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.5-SNAPSHOT</version>
 
     <properties>
         <project.maintainer>Poluektov Yevgeniy &lt;e.poluektov@rbkmoney.com&gt;</project.maintainer>
@@ -21,7 +21,7 @@
         <shared.resources.version>0.2.1</shared.resources.version>
         <server.port>8022</server.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
+        <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
         <custom.flyway.version>4.0.3</custom.flyway.version>
         <custom.jooq.version>3.8.4</custom.jooq.version>
         <dockerfile.Template>GENERATED DOCKER FILE</dockerfile.Template>
@@ -52,10 +52,12 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.jdbc.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -88,7 +90,7 @@
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>eventstock-client</artifactId>
-            <version>1.0.3</version>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>
