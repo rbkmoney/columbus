@@ -8,7 +8,7 @@ import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.model.Lang;
 import com.rbkmoney.columbus.service.GeoIpServiceHandler;
 import com.rbkmoney.columbus.service.GeoService;
-import com.rbkmoney.columbus.util.IpAddresUtils;
+import com.rbkmoney.columbus.util.IpAddressUtils;
 import com.rbkmoney.damsel.base.InvalidRequest;
 import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
 import com.rbkmoney.damsel.geo_ip.LocationInfo;
@@ -21,7 +21,6 @@ import org.springframework.test.context.TestPropertySource;
 import java.io.IOException;
 import java.util.*;
 
-import static com.rbkmoney.columbus.service.GeoIpServiceHandler.buildUnknownGeoIdInfo;
 import static com.rbkmoney.damsel.geo_ip.geo_ipConstants.GEO_ID_UNKNOWN;
 import static org.junit.Assert.*;
 
@@ -120,7 +119,7 @@ public class GeoServiceTest extends AbstractIntegrationTest{
     @Test
     public void getLocationByIp() throws IOException, GeoIp2Exception {
         for (String ip : IP_TO_CITY.keySet()) {
-            CityResponse cityResponse = service.getLocationByIp(IpAddresUtils.convert(ip));
+            CityResponse cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             assertEquals(cityResponse.getCity().getNames().get(Lang.ENG.getValue()), IP_TO_CITY.get(ip));
         }
     }
