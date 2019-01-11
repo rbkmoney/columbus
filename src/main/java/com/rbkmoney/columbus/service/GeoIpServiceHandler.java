@@ -8,10 +8,13 @@ import com.maxmind.geoip2.model.CityResponse;
 import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.util.IpAddresUtils;
 import com.rbkmoney.damsel.base.InvalidRequest;
-import com.rbkmoney.damsel.geo_ip.*;
+import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
+import com.rbkmoney.damsel.geo_ip.GeoIpServiceSrv;
+import com.rbkmoney.damsel.geo_ip.LocationInfo;
+import com.rbkmoney.damsel.geo_ip.SubdivisionInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -20,16 +23,14 @@ import java.util.stream.Collectors;
 
 import static com.rbkmoney.damsel.geo_ip.geo_ipConstants.GEO_ID_UNKNOWN;
 
+@Slf4j
+@RequiredArgsConstructor
 public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private ObjectMapper mapper = new ObjectMapper();
-    private GeoService service;
     private static String UNKNOWN = "UNKNOWN";
 
-    public GeoIpServiceHandler(GeoService service) {
-        this.service = service;
-    }
+    private final GeoService service;
 
     @Override
     public LocationInfo getLocation(String ip) throws InvalidRequest, TException {
@@ -109,6 +110,25 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
 
     }
 
+    @Override
+    public String getLocationIsoCode(String ip) throws InvalidRequest, TException {
+        if (!IpAddresUtils.isValid(ip)) {
+            throw new InvalidRequest(Arrays.asList(ip));
+        }
+        CityResponse cityResponse = null;
+        try {
+            cityResponse = service.getLocationByIp(IpAddresUtils.convert(ip));
+            if (cityResponse != null && cityResponse.getCountry().getIsoCode() != null) {
+                return cityResponse.getCountry().getIsoCode();
+            }
+        } catch (AddressNotFoundException e) {
+            log.warn("IP address {} not found in maxmind db.", ip);
+        } catch (IOException | GeoIp2Exception e) {
+            logAndThrow("Unknown IO exception.", e);
+        }
+        return UNKNOWN;
+    }
+
     public static GeoIDInfo buildUnknownGeoIdInfo() {
         GeoIDInfo geoIDInfo = new GeoIDInfo();
         geoIDInfo.setCountryName(UNKNOWN);
@@ -116,8 +136,8 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
     }
 
     /*
-    * put(key, emptyValue) for keys from set which are not exist in map.keySet()
-    * */
+     * put(key, emptyValue) for keys from set which are not exist in map.keySet()
+     * */
     private <K, V> Map<K, V> putEmptyValues(Map<K, V> map, Set<K> set, V emptyValue) {
         Set<K> nullKeys = new HashSet<>(set);
         nullKeys.removeAll(map.keySet());
