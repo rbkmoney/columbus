@@ -3,7 +3,7 @@ package com.rbkmoney.columbus.util;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class IpAddresUtils {
+public class IpAddressUtils {
     public static boolean isValid(String ip){
         try {
             InetAddress.getByName(ip);

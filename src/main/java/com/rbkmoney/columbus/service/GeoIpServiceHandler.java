@@ -6,7 +6,7 @@ import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.rbkmoney.columbus.model.CityLocation;
-import com.rbkmoney.columbus.util.IpAddresUtils;
+import com.rbkmoney.columbus.util.IpAddressUtils;
 import com.rbkmoney.damsel.base.InvalidRequest;
 import com.rbkmoney.damsel.geo_ip.GeoIDInfo;
 import com.rbkmoney.damsel.geo_ip.GeoIpServiceSrv;
@@ -34,14 +34,14 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
 
     @Override
     public LocationInfo getLocation(String ip) throws InvalidRequest, TException {
-        if (!IpAddresUtils.isValid(ip)) {
+        if (!IpAddressUtils.isValid(ip)) {
             throw new InvalidRequest(Arrays.asList(ip));
         }
 
         CityResponse cityResponse = null;
         String json = "";
         try {
-            cityResponse = service.getLocationByIp(IpAddresUtils.convert(ip));
+            cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             json = mapper.writeValueAsString(cityResponse);
         } catch (AddressNotFoundException e) {
             log.warn("IP address {} not found in maxmind db.", ip);
@@ -66,8 +66,8 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
 
     @Override
     public Map<String, LocationInfo> getLocations(Set<String> set) throws InvalidRequest, TException {
-        List<String> invalidIps = set.stream().filter(ip -> !IpAddresUtils.isValid(ip)).collect(Collectors.toList());
-        if (invalidIps.size() > 0) {
+        List<String> invalidIps = set.stream().filter(ip -> !IpAddressUtils.isValid(ip)).collect(Collectors.toList());
+        if (!invalidIps.isEmpty()) {
             throw new InvalidRequest(invalidIps);
         }
 
@@ -80,9 +80,9 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
     }
 
     @Override
-    public Map<Integer, GeoIDInfo> getLocationInfo(Set<Integer> geo_ids, String lang) throws InvalidRequest, TException {
-        List<CityLocation> cityLocations = service.getLocationName(geo_ids, lang);
-        Map<Integer, GeoIDInfo> result = new HashMap<Integer, GeoIDInfo>();
+    public Map<Integer, GeoIDInfo> getLocationInfo(Set<Integer> geoIds, String lang) throws InvalidRequest, TException {
+        List<CityLocation> cityLocations = service.getLocationName(geoIds, lang);
+        Map<Integer, GeoIDInfo> result = new HashMap<>();
         cityLocations.forEach(cl -> {
             GeoIDInfo geoIDInfo = new GeoIDInfo(cl.getCountryName());
             geoIDInfo.setCityName(cl.getCityName());
@@ -104,20 +104,18 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
 
     //* Если передан неизвестный geoID, он не попадет в возвращаемый результат
     @Override
-    public Map<Integer, String> getLocationName(Set<Integer> geo_ids, String lang) throws InvalidRequest, TException {
-        return service.getLocationName(geo_ids, lang).stream()
+    public Map<Integer, String> getLocationName(Set<Integer> geoIds, String lang) throws InvalidRequest, TException {
+        return service.getLocationName(geoIds, lang).stream()
                 .collect(Collectors.toMap(CityLocation::getGeonameId, CityLocation::getName));
-
     }
 
     @Override
     public String getLocationIsoCode(String ip) throws InvalidRequest, TException {
-        if (!IpAddresUtils.isValid(ip)) {
-            throw new InvalidRequest(Arrays.asList(ip));
+        if (!IpAddressUtils.isValid(ip)) {
+            throw new InvalidRequest(Collections.singletonList(ip));
         }
-        CityResponse cityResponse = null;
         try {
-            cityResponse = service.getLocationByIp(IpAddresUtils.convert(ip));
+            CityResponse cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             if (cityResponse != null && cityResponse.getCountry().getIsoCode() != null) {
                 return cityResponse.getCountry().getIsoCode();
             }
@@ -127,28 +125,6 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             logAndThrow("Unknown IO exception.", e);
         }
         return UNKNOWN;
-    }
-
-    public static GeoIDInfo buildUnknownGeoIdInfo() {
-        GeoIDInfo geoIDInfo = new GeoIDInfo();
-        geoIDInfo.setCountryName(UNKNOWN);
-        return geoIDInfo;
-    }
-
-    /*
-     * put(key, emptyValue) for keys from set which are not exist in map.keySet()
-     * */
-    private <K, V> Map<K, V> putEmptyValues(Map<K, V> map, Set<K> set, V emptyValue) {
-        Set<K> nullKeys = new HashSet<>(set);
-        nullKeys.removeAll(map.keySet());
-
-        Map<K, V> resultMap = new HashMap<>(map);
-
-        for (K key : nullKeys) {
-            resultMap.put(key, emptyValue);
-        }
-
-        return resultMap;
     }
 
     private void logAndThrow(String message, Exception e) throws TException {
