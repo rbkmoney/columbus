@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
+import com.rbkmoney.columbus.contants.CountryCode;
 import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.util.IpAddressUtils;
 import com.rbkmoney.damsel.base.InvalidRequest;
@@ -117,7 +118,8 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
         try {
             CityResponse cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             if (cityResponse != null && cityResponse.getCountry().getIsoCode() != null) {
-                return cityResponse.getCountry().getIsoCode();
+                CountryCode alpha2Code = CountryCode.getByAlpha2Code(cityResponse.getCountry().getIsoCode());
+                return alpha2Code.getAlpha3();
             }
         } catch (AddressNotFoundException e) {
             log.warn("IP address {} not found in maxmind db.", ip);

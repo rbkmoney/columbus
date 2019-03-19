@@ -21,6 +21,7 @@ public class GeoIpServiceHandlerTest {
 
     private static final String IP = "192.168.100.1";
     private static final String RU = "RU";
+    public static final String RUS = "RUS";
     GeoIpServiceHandler geoIpServiceHandler;
 
     @Mock
@@ -41,7 +42,7 @@ public class GeoIpServiceHandlerTest {
     @Test
     public void getLocationIsoCode() throws TException {
         String locationIsoCode = geoIpServiceHandler.getLocationIsoCode(IP);
-        Assert.assertEquals(RU, locationIsoCode);
+        Assert.assertEquals(RUS, locationIsoCode);
     }
 
     @Test
