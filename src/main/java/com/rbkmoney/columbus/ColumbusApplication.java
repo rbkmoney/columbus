@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @ServletComponentScan
-@SpringBootApplication(scanBasePackages = {"com.rbkmoney.columbus", "com.rbkmoney.dbinit"})
+@SpringBootApplication(scanBasePackages = {"com.rbkmoney.columbus"})
 public class ColumbusApplication {
 
     public static void main(String[] args) {

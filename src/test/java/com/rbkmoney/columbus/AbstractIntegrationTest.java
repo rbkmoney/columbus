@@ -11,7 +11,7 @@ import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
@@ -40,10 +40,9 @@ public abstract class AbstractIntegrationTest {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             DockerPort postgres = docker.containers().container("postgres").port(5432);
             final String dbUrl = postgres.inFormat("jdbc:postgresql://$HOST:$EXTERNAL_PORT/postgres");
-
-            EnvironmentTestUtils.addEnvironment("testcontainers", configurableApplicationContext.getEnvironment(),
-                    "spring.datasource.url=" + dbUrl
-            );
+            TestPropertyValues
+                    .of("pring.datasource.url=" + dbUrl)
+                    .applyTo(configurableApplicationContext.getEnvironment());
         }
     }
 

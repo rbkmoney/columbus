@@ -29,7 +29,6 @@ import static org.junit.Assert.*;
 //@Ignore
 public class GeoServiceTest extends AbstractIntegrationTest{
 
-
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();
     public static final String IP_MOSCOW = "94.159.54.234";
     public static final String IP_LONDON = "212.71.235.130";

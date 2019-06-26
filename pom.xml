@@ -28,8 +28,7 @@
         <server.port>8022</server.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
-        <custom.flyway.version>4.0.3</custom.flyway.version>
-        <custom.jooq.version>3.8.4</custom.jooq.version>
+        <flyway.version>5.2.3</flyway.version>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
 
@@ -83,21 +82,16 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-            <version>${custom.jooq.version}</version>
+            <version>${jooq.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>${custom.flyway.version}</version>
+            <version>${flyway.version}</version>
         </dependency>
 
         <!--RBK libs-->
-        <dependency>
-            <groupId>com.rbkmoney</groupId>
-            <artifactId>dbinit</artifactId>
-            <version>1.0.5</version>
-        </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>eventstock-client</artifactId>
@@ -225,6 +219,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!-- Sonar-JaCoCo integration plugin -->
             <plugin>
                 <groupId>org.jacoco</groupId>
