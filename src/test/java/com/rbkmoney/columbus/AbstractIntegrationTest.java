@@ -51,4 +51,5 @@ public abstract class AbstractIntegrationTest {
 
     @Value("${local.server.port}")
     protected int port;
+
 }
