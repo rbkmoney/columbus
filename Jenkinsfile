@@ -5,9 +5,10 @@ build('columbus', 'java-maven') {
 
     def buildContainer = docker.image('dr2.rbkmoney.com/rbkmoney/postgres-geodata:0eb52256576ec22f89fadc3e7fe505b692e838a3')
     runStage('Pull build image') {
-         docker.withRegistry('https://dr2.rbkmoney.com/', 'dockerhub-rbkmoneycibot') {
-             buildContainer.pull()
-         }
+        docker.withRegistry('dr2.rbkmoney.com', 'jenkins_harbor') {
+            buildContainer.pull()
+        }
+        buildContainer = docker.image(registry + '/rbkmoney/postgres-geodata:0eb52256576ec22f89fadc3e7fe505b692e838a3')
     }
 
     def javaServicePipeline
