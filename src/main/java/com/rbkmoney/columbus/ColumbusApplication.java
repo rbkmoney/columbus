@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @ServletComponentScan
-@SpringBootApplication(scanBasePackages = {"com.rbkmoney.columbus", "com.rbkmoney.dbinit"})
-public class ColumbusApplication {
+@SpringBootApplication
+public class ColumbusApplication extends SpringApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ColumbusApplication.class, args);

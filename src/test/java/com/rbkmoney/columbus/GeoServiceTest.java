@@ -24,11 +24,7 @@ import java.util.*;
 import static com.rbkmoney.damsel.geo_ip.geo_ipConstants.GEO_ID_UNKNOWN;
 import static org.junit.Assert.*;
 
-
-@TestPropertySource(locations="classpath:test.properties")
-//@Ignore
-public class GeoServiceTest extends AbstractIntegrationTest{
-
+public class GeoServiceTest extends AbstractIntegrationTest {
 
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();
     public static final String IP_MOSCOW = "94.159.54.234";
@@ -70,10 +66,9 @@ public class GeoServiceTest extends AbstractIntegrationTest{
 
     @Test
     public void testGetLocationNullCity() throws TException {
-        LocationInfo info = handler.getLocation("89.218.51.9");
+        LocationInfo info = handler.getLocation("172.233.233.1");
 
-        assertEquals(info.getCityGeoId(), GEO_ID_UNKNOWN);
-        assertEquals(info.getCityGeoId(), GEO_ID_UNKNOWN);
+        assertEquals(GEO_ID_UNKNOWN, info.getCityGeoId());
     }
 
     @Test

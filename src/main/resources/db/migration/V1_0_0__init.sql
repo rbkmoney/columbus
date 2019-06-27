@@ -15,6 +15,7 @@ CREATE TABLE clb.city_locations_ru
   city_name text,
   metro_code text,
   time_zone text,
+  is_in_european_union text,
   CONSTRAINT "geoname_id_ru_pkey" PRIMARY KEY ("geoname_id")
 );
 
@@ -39,6 +40,7 @@ CREATE TABLE clb.city_locations_en
   city_name text,
   metro_code text,
   time_zone text,
+  is_in_european_union text,
   CONSTRAINT "geoname_id_en_pkey" PRIMARY KEY ("geoname_id")
 );
 

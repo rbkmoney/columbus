@@ -3,8 +3,6 @@ package com.rbkmoney.columbus.dao;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -22,7 +20,6 @@ import java.net.InetAddress;
  */
 @Component
 public class GeoIpDao {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value(value = "${geo.db.file.path}")
     private String geoDbFilePath;
