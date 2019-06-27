@@ -19,14 +19,11 @@ public class TestApi {
     public void test() throws URISyntaxException, TException {
         THSpawnClientBuilder clientBuilder = (THSpawnClientBuilder) new THSpawnClientBuilder().withAddress(new URI("http://localhost:8022/repo"));
         GeoIpServiceSrv.Iface client = clientBuilder.build(GeoIpServiceSrv.Iface.class);
-
         LocationInfo locationInfo = client.getLocation("94.159.54.234");
-
         Set<Integer> set = new HashSet<>();
         set.add(553248);
         set.add(524901);
         Map<Integer,String> map = client.getLocationName(set, "ru");
-
         System.out.println("");
     }
 }
