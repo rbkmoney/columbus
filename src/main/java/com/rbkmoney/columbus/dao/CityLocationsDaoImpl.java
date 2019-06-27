@@ -3,8 +3,7 @@ package com.rbkmoney.columbus.dao;
 import com.rbkmoney.columbus.exception.DaoException;
 import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.model.Lang;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
@@ -15,9 +14,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 public class CityLocationsDaoImpl extends NamedParameterJdbcDaoSupport implements CityLocationsDao {
     private final CityLocationRowMapper cityLocationRowMapper = new CityLocationRowMapper();
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private static String RU_LOCATION_TABLE = "clb.city_locations_ru";
     private static String ENG_LOCATION_TABLE = "clb.city_locations_en";

@@ -6,7 +6,6 @@ import com.rbkmoney.damsel.geo_ip.GeoIpServiceSrv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class ServiceConfiguration {
 
