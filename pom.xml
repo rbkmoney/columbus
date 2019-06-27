@@ -225,31 +225,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flyway.version}</version>
-                <configuration>
-                    <url>${db.url}</url>
-                    <user>${db.user}</user>
-                    <password>${db.password}</password>
-                    <schemas>
-                        <schema>${db.schema}</schema>
-                    </schemas>
-                    <locations>
-                        <location>filesystem:${project.basedir}/src/main/resources/db/migration</location>
-                    </locations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>migrate</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>migrate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- Sonar-JaCoCo integration plugin -->
             <plugin>
                 <groupId>org.jacoco</groupId>
