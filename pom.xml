@@ -27,7 +27,6 @@
         <dockerfile.registry>{env.REGISTRY}</dockerfile.registry>
         <shared.resources.version>0.3.6</shared.resources.version>
         <damsel.version>1.273-741a2a1</damsel.version>
-        <server.port>8022</server.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <db.port>5432</db.port>
         <db.url>jdbc:postgresql://localhost:${db.port}/columbus</db.url>
