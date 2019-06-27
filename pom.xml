@@ -158,14 +158,6 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}</directory>
-                <targetPath>${project.build.directory}</targetPath>
-                <includes>
-                    <include>Dockerfile</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
                 <directory>${project.build.directory}/maven-shared-archive-resources</directory>
                 <targetPath>${project.build.directory}</targetPath>
                 <includes>
@@ -183,14 +175,6 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>${project.basedir}</directory>
-                <targetPath>${project.build.directory}</targetPath>
-                <includes>
-                    <include>GeoLite2-city.mmdb</include>
-                </includes>
-                <filtering>false</filtering>
             </resource>
         </resources>
 

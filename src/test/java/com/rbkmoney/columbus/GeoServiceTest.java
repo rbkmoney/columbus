@@ -66,10 +66,9 @@ public class GeoServiceTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLocationNullCity() throws TException {
-        LocationInfo info = handler.getLocation("89.218.51.9");
+        LocationInfo info = handler.getLocation("172.233.233.1");
 
-        assertEquals(info.getCityGeoId(), GEO_ID_UNKNOWN);
-        assertEquals(info.getCityGeoId(), GEO_ID_UNKNOWN);
+        assertEquals(GEO_ID_UNKNOWN, info.getCityGeoId());
     }
 
     @Test
