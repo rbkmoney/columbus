@@ -180,7 +180,7 @@
                 <directory>${project.basedir}</directory>
                 <targetPath>${project.build.directory}</targetPath>
                 <includes>
-                    <include>GeoLite2-city.mmdb</include>
+                    <include>GeoLite2-City.mmdb</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>

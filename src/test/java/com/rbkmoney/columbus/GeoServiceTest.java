@@ -24,7 +24,6 @@ import java.util.*;
 import static com.rbkmoney.damsel.geo_ip.geo_ipConstants.GEO_ID_UNKNOWN;
 import static org.junit.Assert.*;
 
-@TestPropertySource(locations="classpath:test.properties")
 public class GeoServiceTest extends AbstractIntegrationTest {
 
     public static final Map<String, String> IP_TO_CITY = new HashMap<>();

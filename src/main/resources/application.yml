@@ -10,7 +10,7 @@ management:
         enabled: false
 
 # maxmind geo service
-geo.db.file.path: file:GeoLite2-city.mmdb
+geo.db.file.path: file:GeoLite2-City.mmdb
 
 # database properties
 spring:
