@@ -27,7 +27,6 @@
         <dockerfile.registry>dr2.rbkmoney.com</dockerfile.registry>
         <shared.resources.version>0.3.6</shared.resources.version>
         <damsel.version>1.273-741a2a1</damsel.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <db.port>5432</db.port>
         <db.url>jdbc:postgresql://localhost:${db.port}/columbus</db.url>
         <db.user>postgres</db.user>
@@ -177,7 +176,7 @@
             </resource>
             <resource>
                 <directory>${project.basedir}</directory>
-                <targetPath>${project.build.directory}</targetPath>
+                <targetPath>src/main/resources</targetPath>
                 <includes>
                     <include>GeoLite2-City.mmdb</include>
                 </includes>
