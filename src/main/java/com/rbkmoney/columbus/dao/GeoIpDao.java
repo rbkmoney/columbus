@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 
 
@@ -33,8 +34,8 @@ public class GeoIpDao {
     public void init() throws IOException {
         // A File object pointing to your GeoIP2 or GeoLite2 database
         Resource resource = resourceLoader.getResource(geoDbFilePath);
-        File dbAsFile = resource.getFile();
-        reader = new DatabaseReader.Builder(dbAsFile).build();
+        InputStream inputStream = resource.getInputStream();
+        reader = new DatabaseReader.Builder(inputStream).build();
     }
 
     public CityResponse getLocationInfoByIp(InetAddress ipAddress) throws IOException, GeoIp2Exception {
