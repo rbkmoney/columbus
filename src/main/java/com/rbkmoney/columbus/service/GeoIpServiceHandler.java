@@ -123,8 +123,8 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             }
         } catch (AddressNotFoundException e) {
             log.warn("IP address {} not found in maxmind db.", ip);
-        } catch (IOException | GeoIp2Exception e) {
-            logAndThrow("Unknown IO exception.", e);
+        } catch (Exception e) {
+            logAndThrow("Unknown exception.", e);
         }
         return UNKNOWN;
     }
