@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.rbkmoney</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.1.RELEASE</version>
+        <version>2.3.1.RELEASE</version>
     </parent>
 
     <groupId>com.rbkmoney.columbus</groupId>
@@ -25,8 +25,9 @@
         <exposed.ports>${server.port}</exposed.ports>
         <dockerfile.base.service.tag>c0d0900ec19c907d866f8360031a836049985110</dockerfile.base.service.tag>
         <dockerfile.registry>dr2.rbkmoney.com</dockerfile.registry>
-        <shared.resources.version>0.3.6</shared.resources.version>
-        <damsel.version>1.273-741a2a1</damsel.version>
+        <shared.resources.version>0.3.8</shared.resources.version>
+        <damsel.version>1.439-b18f037</damsel.version>
+        <woody.thrift.version>1.1.22</woody.thrift.version>
         <db.port>5432</db.port>
         <db.url>jdbc:postgresql://localhost:${db.port}/columbus</db.url>
         <db.user>postgres</db.user>
@@ -87,7 +88,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -105,9 +106,9 @@
 
         <!--RBK libs-->
         <dependency>
-            <groupId>com.rbkmoney</groupId>
-            <artifactId>eventstock-client</artifactId>
-            <version>1.2.1</version>
+            <groupId>com.rbkmoney.woody</groupId>
+            <artifactId>woody-thrift</artifactId>
+            <version>${woody.thrift.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>
@@ -144,7 +145,6 @@
             <version>1.10.7</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
