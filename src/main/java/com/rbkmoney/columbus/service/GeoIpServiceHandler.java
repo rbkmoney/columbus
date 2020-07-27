@@ -119,10 +119,14 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             CityResponse cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             if (cityResponse != null && cityResponse.getCountry().getIsoCode() != null) {
                 CountryCode alpha2Code = CountryCode.getByAlpha2Code(cityResponse.getCountry().getIsoCode());
+                if (alpha2Code == null) {
+                    log.warn("Unknown iso code, isoCode={}, ip={}", cityResponse.getCountry().getIsoCode(), ip);
+                    return UNKNOWN;
+                }
                 return alpha2Code.getAlpha3();
             }
         } catch (AddressNotFoundException e) {
-            log.warn("IP address {} not found in maxmind db.", ip);
+            log.info("IP address {} not found in maxmind db.", ip);
         } catch (Exception e) {
             logAndThrow("Unknown exception.", e);
         }

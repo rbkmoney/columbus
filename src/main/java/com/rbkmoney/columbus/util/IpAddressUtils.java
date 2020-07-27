@@ -4,7 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class IpAddressUtils {
-    public static boolean isValid(String ip){
+    public static boolean isValid(String ip) {
         try {
             InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
