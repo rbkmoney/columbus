@@ -29,6 +29,7 @@ spring:
       idle-timeout: 30000
       maximum-pool-size: 10
     flyway:
+      table: schema_version
       schemas: columbus
 info:
   version: @project.version@
