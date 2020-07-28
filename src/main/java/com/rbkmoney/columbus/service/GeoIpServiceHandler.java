@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
-import com.rbkmoney.columbus.contants.CountryCode;
+import com.neovisionaries.i18n.CountryCode;
 import com.rbkmoney.columbus.model.CityLocation;
 import com.rbkmoney.columbus.util.IpAddressUtils;
 import com.rbkmoney.damsel.base.InvalidRequest;
@@ -36,7 +36,7 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
     @Override
     public LocationInfo getLocation(String ip) throws InvalidRequest, TException {
         if (!IpAddressUtils.isValid(ip)) {
-            throw new InvalidRequest(Arrays.asList(ip));
+            throw new InvalidRequest(Collections.singletonList(ip));
         }
 
         CityResponse cityResponse = null;
@@ -45,7 +45,7 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             json = mapper.writeValueAsString(cityResponse);
         } catch (AddressNotFoundException e) {
-            log.info("IP address {} not found in maxmind db.", ip);
+            log.info("IP address {} not found", ip);
         } catch (JsonProcessingException e) {
             logAndThrow("CityResponse cannot be converted to JSON.", e);
         } catch (IOException | GeoIp2Exception e) {
@@ -119,14 +119,12 @@ public class GeoIpServiceHandler implements GeoIpServiceSrv.Iface {
             CityResponse cityResponse = service.getLocationByIp(IpAddressUtils.convert(ip));
             if (cityResponse != null && cityResponse.getCountry().getIsoCode() != null) {
                 CountryCode alpha2Code = CountryCode.getByAlpha2Code(cityResponse.getCountry().getIsoCode());
-                if (alpha2Code == null) {
-                    log.warn("Unknown iso code, isoCode={}, ip={}", cityResponse.getCountry().getIsoCode(), ip);
-                    return UNKNOWN;
+                if (alpha2Code != null) {
+                    return alpha2Code.getAlpha3();
                 }
-                return alpha2Code.getAlpha3();
             }
         } catch (AddressNotFoundException e) {
-            log.info("IP address {} not found in maxmind db.", ip);
+            log.info("IP address {} not found", ip);
         } catch (Exception e) {
             logAndThrow("Unknown exception.", e);
         }

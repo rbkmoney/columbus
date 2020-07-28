@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 
 public class GeoIpServiceHandlerTest {
 
